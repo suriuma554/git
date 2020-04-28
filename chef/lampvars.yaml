@@ -1,0 +1,34 @@
+---
+- hosts: webservers
+  become: yes
+  vars:
+    package_apache: apache2
+    package_php_modules:
+      - php 
+      - libapache2-mod-php
+      - php-mysql
+      - php-cli
+  tasks: 
+    - name: fail playbook in unsupported formats
+      fail:
+        msg: 'this playbook supports only for ubuntu'
+      when: ansible_distribution != 'Ubuntu'
+    - name: update and install apache
+      apt: 
+        name: apache2
+        update_cache: yes
+        state: present
+    - name: restart and enable apache2
+      service: 
+        name: "{{ Package_apache }}"
+        enabled: yes
+        state: started
+    - name: install php modules
+      apt:
+        name: '{{ item }}'
+        state: present
+      loop: "{{ package_php_modules }}"
+    - name: restart apache2
+      service: 
+        name: apache2
+        state: restarted

@@ -1,0 +1,6 @@
+---
+- hosts: all
+  tasks:
+    - name: display varaible value
+      debug:
+        msg: "package_name = {{ package_name }}"

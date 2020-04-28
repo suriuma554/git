@@ -1,0 +1,17 @@
+---
+- hosts: all
+  become: yes
+  tasks:
+   -  name: variable value
+      debug:
+        var: "{{ apache_package }}"
+        verdosity: 1
+   -  name: install apache
+      package:
+        name: "{{ apache_package }}"
+        state: present
+   -  name: enable and start apache
+      service:
+        name:  "{{ apache_package }}"
+        enabled: yes
+        state: present
